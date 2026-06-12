@@ -1,0 +1,40 @@
+
+[pr_reviewer]
+require_security_review = true
+require_tests_review = true
+num_max_findings = 6
+extra_instructions = """
+Réponds toujours en français.
+
+Effectue une revue de code ORIENTÉE CYBERSÉCURITÉ sur le code introduit dans la PR (lignes '+').
+La sécurité est la priorité absolue de cette revue.
+
+Recherche et signale systématiquement :
+- Injections : SQL, NoSQL, commandes shell, LDAP, XPath, template (SSTI).
+- Cross-Site Scripting (XSS) et absence d'échappement/sanitisation des entrées utilisateur.
+- Secrets en dur : clés API, mots de passe, tokens, certificats privés.
+- Authentification / autorisation : contrôles d'accès manquants ou contournables, IDOR, élévation de privilèges.
+- Cryptographie faible : algorithmes obsolètes (MD5, SHA1, DES), IV/sel statiques, générateurs d'aléa non sécurisés.
+- Désérialisation non sûre et exécution de code arbitraire (RCE).
+- SSRF, path traversal, upload de fichiers non validé.
+- Exposition de données sensibles : logs, messages d'erreur verbeux, données en clair.
+- Dépendances vulnérables ou non épinglées.
+- CSRF, en-têtes de sécurité manquants, configuration CORS trop permissive.
+
+Pour CHAQUE faille trouvée, indique :
+1. La sévérité (Critique / Élevée / Moyenne / Faible).
+2. Le fichier et le numéro de ligne concernés.
+3. Le risque et un scénario d'exploitation plausible.
+4. Une correction concrète, avec exemple de code si pertinent.
+5. La référence CWE et/ou OWASP Top 10 si applicable.
+
+Vérifie aussi la présence de tests couvrant les cas de sécurité (entrées malveillantes, autorisations).
+"""
+
+# Séquence exacte des commandes lancées automatiquement à l'ouverture d'une PR.
+# Elles s'exécutent dans l'ordre indiqué ci-dessous.
+[github_app]
+pr_commands = [
+    "/review",
+    "/improve",
+]
