@@ -42,3 +42,35 @@ pr_commands = [
     "/review",
     "/improve",
 ]
+
+# Prompt personnalisé appelable dans les commentaires d'une PR avec : /custom_prompt
+# Objectif : repérer les variables mal nommées / mal décrites et proposer mieux.
+[pr_custom_prompt]
+prompt = """
+Analyse UNIQUEMENT le nouveau code de la PR (lignes commençant par '+').
+Ta mission : repérer les VARIABLES (et paramètres, constantes, attributs) qui sont
+MAL NOMMÉES ou MAL DÉCRITES, et proposer une amélioration.
+
+Considère qu'une variable est problématique si :
+- Le nom est vague, générique ou trompeur : `data`, `tmp`, `val`, `x`, `res`, `obj`, `thing`, `info`, `flag`...
+- Le nom ne reflète pas le contenu réel ou l'intention.
+- Le nom utilise des abréviations obscures ou des lettres isolées (hors compteurs de boucle évidents `i`, `j`).
+- L'unité ou le type manque alors qu'il serait utile (ex: `timeout` -> `timeout_seconds`, `size` -> `size_bytes`).
+- Le booléen ne se lit pas comme une affirmation (ex: `status` -> `is_active`, `check` -> `has_access`).
+- Le commentaire / docstring associé est absent, faux ou ne décrit pas le rôle de la variable.
+- Le nommage est incohérent avec les conventions du reste du fichier (snake_case vs camelCase).
+
+Pour CHAQUE variable problématique, fournis :
+1. Le fichier et le numéro de ligne.
+2. Le nom actuel et pourquoi il est inadéquat.
+3. Un nom amélioré, clair et explicite.
+4. Un exemple de code corrigé (la ligne réécrite).
+5. Si pertinent, une suggestion de commentaire/docstring décrivant la variable.
+
+Réponds en français. Ignore les problèmes de sécurité, de performance ou de style
+non liés au nommage/à la description des variables : concentre-toi UNIQUEMENT sur ce sujet.
+Si aucune variable n'est problématique, dis-le explicitement.
+"""
+self_reflect_on_custom_suggestions = true
+num_code_suggestions_per_chunk = 4
+enable_help_text = false
