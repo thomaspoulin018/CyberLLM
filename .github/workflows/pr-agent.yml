@@ -1,0 +1,27 @@
+name: PR Agent
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+  issue_comment:          # permet de declencher les commandes (/review, /describe, /improve)
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  pr_agent_job:
+    if: ${{ github.event.sender.type != 'Bot' }}
+    runs-on: ubuntu-latest
+    name: Run PR Agent
+    steps:
+      - name: PR Agent action step
+        uses: qodo-ai/pr-agent@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # --- OpenRouter via LiteLLM ---
+          OPENAI_KEY: ${{ secrets.OPENROUTER_KEY }}
+          OPENAI.API_BASE: "https://openrouter.ai/api/v1"
+          CONFIG.MODEL: "openrouter/google/gemma-4-26b-a4b-it:free"
+          CONFIG.FALLBACK_MODELS: '["openrouter/google/gemma-4-26b-a4b-it:free"]'
+          CONFIG.CUSTOM_MODEL_MAX_TOKENS: "8192"
