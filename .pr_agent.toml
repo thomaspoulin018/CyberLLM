@@ -32,8 +32,12 @@ Vérifie aussi la présence de tests couvrant les cas de sécurité (entrées ma
 """
 
 # Séquence exacte des commandes lancées automatiquement à l'ouverture d'une PR.
-# Elles s'exécutent dans l'ordre indiqué ci-dessous.
-[github_app]
+# IMPORTANT : en mode GitHub Action, c'est CETTE section qui pilote la séquence
+# (la section [github_app] est ignorée par l'Action).
+[github_action_config]
+auto_describe = false   # ne pas générer la description automatiquement
+auto_review   = true    # lancer la revue (orientée sécurité)
+auto_improve  = true    # lancer les suggestions de code
 pr_commands = [
     "/review",
     "/improve",
