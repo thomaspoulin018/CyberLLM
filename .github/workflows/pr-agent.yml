@@ -19,9 +19,9 @@ jobs:
         uses: qodo-ai/pr-agent@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # --- OpenRouter via LiteLLM ---
-          OPENAI_KEY: ${{ secrets.OPENROUTER_KEY }}
-          OPENAI.API_BASE: "https://openrouter.ai/api/v1"
+          # --- OpenRouter (la cle DOIT etre dans la section [openrouter]) ---
+          OPENROUTER.KEY: ${{ secrets.OPENROUTER_KEY }}
+          OPENROUTER.API_BASE: "https://openrouter.ai/api/v1"
           CONFIG.MODEL: "openrouter/google/gemma-4-26b-a4b-it:free"
           CONFIG.FALLBACK_MODELS: '["openrouter/google/gemma-4-26b-a4b-it:free"]'
           CONFIG.CUSTOM_MODEL_MAX_TOKENS: "8192"
